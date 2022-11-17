@@ -75,4 +75,6 @@ Ces deux fonctions contiennent un code sémilaire dans la classe Simulation, ce 
 	}
 	
 ```
-Cette modification implique une nouvelle méthode ajouté dans la Class Manager qui est _ _addElement_ _ qui permets d'ajouter un élément mobile peu importe son type.
+Cette modification implique une nouvelle méthode ajouté dans la Class Manager qui est _ _ addElement _ _ qui permets d'ajouter un élément mobile peu importe son type(Satellite ou Balise).
+
+## 3. Suite
