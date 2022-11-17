@@ -52,4 +52,26 @@ public class DeplSynchronisation extends DeplacementBalise {
     ...
     }
 ```
-## 2. Explication et résolution du beug:
+## 2. Amélioration des deux fonction addBalise et addSatellite:
+Ces deux fonctions contiennent un code sémilaire dans la classe Simulation, ce qui donne la possibilité de le factoriser et creer qu'une seule fonction addElement :
+```java
+	public void addElement(JPanel pannel, int memorySize, Point startPos, Deplacement depl,boolean isbalise,int vitesse) {
+		ElementMobile element=new ElementMobile(memorySize);
+		GrElementMobile grbal=null;
+		
+		if (isbalise) {
+			element = new Balise(memorySize);
+			element.setDeplacement(depl);
+			grbal = new GrBalise(this.ether);
+		}else {
+			element = new Satellite(memorySize);
+			element.setDeplacement(new DeplSatellite(-10, 1000, vitesse));
+			 grbal = new GrSatellite(this.ether);
+		}
+		element.setPosition(startPos);
+		manager.addElement(element, isbalise);
+		grbal.setModel(element);
+		pannel.add(grbal);
+	}
+	
+```
