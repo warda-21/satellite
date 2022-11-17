@@ -69,7 +69,7 @@ Ces deux fonctions contiennent un code sémilaire dans la classe Simulation, ce 
 			 grbal = new GrSatellite(this.ether);
 		}
 		element.setPosition(startPos);
-		manager.addElement(element, isbalise);
+		manager.addElement(element);
 		grbal.setModel(element);
 		pannel.add(grbal);
 	}
