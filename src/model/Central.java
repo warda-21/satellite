@@ -17,7 +17,7 @@ public class Central extends Element {
 	}
 
 	public void tick() {
-		this.bouge();
+		this.send(new SatelliteMoved(this));
 	}
 	
 	public boolean dataIsNoVide() {
@@ -38,10 +38,6 @@ public class Central extends Element {
 		for (int data : dataList) {
 			this.datas.add(data);
 		}
-	}
-
-	public void bouge() {
-		this.send(new SatelliteMoved(this));
 	}
 
 	public void enregistrementData() {

@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -25,7 +24,6 @@ import model.DeplSatellite;
 import model.DeplVertical;
 import model.Deplacement;
 import model.Element;
-import model.ElementMobile;
 import model.Manager;
 import model.Satellite;
 import nicellipse.component.NiRectangle;
@@ -59,7 +57,11 @@ public class Simulation {
 		this.animation.setRepeats(true);
 		this.animation.start();
 	}
-
+	/**
+	 * Creation Des buttons
+	 * 
+	 * @return {@link JPanel}
+	 */
 	private JPanel buttonPanel() {
 		JButton start = new JButton("Start");
 		JButton stop = new JButton("Pause");
@@ -102,7 +104,7 @@ public class Simulation {
 
 	/**
 	 * 
-	 * @return
+	 * @return {@link JPanel}
 	 */
 	private JPanel fpsSliderPanel() {
 		JPanel panel = new JPanel();
@@ -137,6 +139,7 @@ public class Simulation {
 	}
 
 	/**
+	 * 
 	 * @param sea
 	 * @param memorySize
 	 * @param startPos
@@ -170,18 +173,7 @@ public class Simulation {
 		sky.add(addElement(sat, TypeElement.SATELLITE));
 	}
 
-	/*
-	 * public void addElementPanel(JPanel panel, int memorySize, Point startPos,
-	 * Deplacement depl, boolean estSatellite) {
-	 * 
-	 * ElementMobile element = new ElementMobile(memorySize);
-	 * element.setPosition(startPos); element.setDeplacement(depl); GrElementMobile
-	 * grelement = new GrElementMobile(this.ether); grelement.setModel(element);
-	 * panel.add(grelement); manager.addelem(memorySize, startPos, depl,
-	 * estSatellite);
-	 * 
-	 * }
-	 */
+	
 
 	public GrElementMobile addElement(Element sat, TypeElement typeElmt) {
 		GrElementMobile grSat = null;
@@ -203,38 +195,6 @@ public class Simulation {
 		return grSat;
 	}
 
-	public void addElement(JPanel pannel, int memorySize, Point startPos, Deplacement depl, TypeElement typeElmt,
-			int vitesse) {
-		ElementMobile element = new ElementMobile(memorySize);
-		GrElementMobile grbal = null;
-		String nom = "2646864.png";
-		switch (typeElmt) {
-		case CENTRAL:
-
-		case BALISE:
-			element = new Balise(memorySize);
-			element.setDeplacement(depl);
-			break;
-		case SATELLITE:
-			nom = "xxx.jpg";
-			element = new Satellite(memorySize);
-			element.setDeplacement(new DeplSatellite(-10, 1000, vitesse));
-
-		}
-		/*
-		 * if (isbalise) { element = new Balise(memorySize);
-		 * element.setDeplacement(depl); }else { nom="xxx.jpg"; element = new
-		 * Satellite(memorySize); element.setDeplacement(new DeplSatellite(-10, 1000,
-		 * vitesse)); }
-		 */
-		// grbal= new GrElementMobile(this.ether, new File(nom));
-		grbal = new GrElementMobile(this.ether);
-		element.setPosition(startPos);
-		manager.addElement(element);
-		grbal.setModel(element);
-		pannel.add(grbal);
-	}
-
 	public void launch() {
 		JLayeredPane main = new JLayeredPane();
 		main.setOpaque(true);
@@ -253,22 +213,18 @@ public class Simulation {
 		sea.setDimension(new Dimension(this.worldDim.width, this.worldDim.height / 2));
 		sea.setLocation(new Point(50, this.worldDim.height / 2));
 
-		// this.addSatelitte(sky, 100000, new Point(10, 50), 2);
+		// Satellite
 		this.addSatelitte(sky, 100000, new Point(10, 50), 3);
 		this.addSatelitte(sky, 100000, new Point(100, 10), 2);
-		// this.addSatelitte(sky, 100000, new Point(400, 90), 3);
-		// this.addSatelitte(sky, 100000, new Point(500, 140), 4);
-		// this.addSatelitte(sky, 100000, new Point(600, 10), 1);
+		this.addSatelitte(sky, 100000, new Point(500, 140), 4);
+		
 
-		// central
+		// Central
 		this.addCentral(sky, 100000, new Point(-5, 230), 4);
 
-		// BUG
-		//this.addBalise(sea, 100, new Point(400, 200), new DeplHorizontal(50, 750));
-		// this.addBalise(sea, 300, new Point(400, 200), new DeplHorizontal(50, 750));
-		this.addBalise(sea, 400, new Point(100, 100), new DeplVertical(50, 200));
-		//this.addBalise(sea, 200, new Point(0, 160), new DeplHorizontal(0, 800));
-		//this.addBalise(sea, 80, new Point(200, 100), new DeplVertical(130, 270));
+		// Balise
+		this.addBalise(sea, 200, new Point(0, 160), new DeplHorizontal(0, 800));
+		this.addBalise(sea, 80, new Point(200, 100), new DeplVertical(130, 270));
 		this.addBalise(sea, 150, new Point(300, 100), new DeplHorizontal(200, 600));
 
 		main.add(sky, JLayeredPane.DEFAULT_LAYER);

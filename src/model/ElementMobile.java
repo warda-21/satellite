@@ -1,9 +1,5 @@
 package model;
 
-import java.awt.Point;
-
-import eventHandler.AbstractEvent;
-import eventHandler.EventHandler;
 import events.PositionChanged;
 
 public class ElementMobile extends Element {
