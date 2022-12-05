@@ -275,4 +275,4 @@ public GrElementMobile addElement(Element sat, TypeElement typeElmt) {
 
 
 
-## 5. Suite
+## 5. Diagramme UML en pièce joite.
