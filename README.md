@@ -77,7 +77,7 @@ Ces deux fonctions contiennent un code sémilaire dans la classe Simulation, ce 
 ```
 Cette modification implique une nouvelle méthode ajouté dans la Class Manager qui est  _addElement_  qui permets d'ajouter un élément mobile peu importe son type(Satellite ou Balise).
 ## 3. Amélioration du code de la Class Manager :
-``java 
+```java 
 public class Manager {
 	ArrayList<ElementMobile> listeelements = new ArrayList<ElementMobile>();
 	Central central;
@@ -116,24 +116,24 @@ public class Manager {
 		central.unregisterListener(SatelliteMoved.class, b);
 	}
 }
-``
+```
 
 
 ## 4. Ajout d'un élément graphique et une fonctionnalité:
 Ajout d'une Centrale pour communiquer avec les satelites de la façon suivante: 
 	Une balise envoit des informations à un Satelite , et ce dernier transmet les données reçus à La Centrale.
 ### a)Création de l'énumération TypeElement: 
-``java 
+```java 
 package simulation;
 
 public enum TypeElement {
 	CENTRAL, BALISE, SATELLITE;
 
 }
-``
+```
 ### b)Ajout des boutton Start et Pause pour commencer et arrêter la simulation: 
 Dans la Class Simulation 
-``java
+```java
 ...
 private JPanel buttonPanel() {
 		JButton start = new JButton("Start");
@@ -155,10 +155,10 @@ private JPanel buttonPanel() {
 			}
 		});
 ...
-``
+```
 ### c)Ajout du boutton Save  pour enregistrer les données actuel de notre simulation et envoyer un  rapport nommé "raport_satellite.txt" : 
 Dans la Class simulation
-``java
+```java
 ...
 private JPanel buttonPanel() {
 		JButton start = new JButton("Start");
@@ -172,9 +172,9 @@ private JPanel buttonPanel() {
 			}
 		});....
 ...
-``
+```
  les données sont récupérées et enregistrés grace à la fonction suivante dans la Classe Centrale:
- ``java
+```java
  ...
  	public void enregistrementData() {
 		if (this.datas == null)
@@ -188,9 +188,9 @@ private JPanel buttonPanel() {
 		rapport.genererRapport(information, this.datas.size());
 	}
 ...
- ``
+```
  Et enfin le fichier rapport est généré  avec la Classe Rapport suivante :
- ``java
+```java
  public class Rapport {
 	private String RAPPORT = "Le rapport du @date@ \n"
 			+ "Nombre de données recoltées : @nbInfortion@ \n"
@@ -223,9 +223,9 @@ private JPanel buttonPanel() {
 	}
 
 }
-``
+```
 ### d)Ajout de la méthode addCentral dans la simulation pour Creer la Centrale: 
-``java 
+```java 
 ...
 public void addCentral(JPanel central, int memorySize, Point startPos, int vitesse) {
 		Central centrl = new Central(memorySize, "central");
@@ -233,10 +233,10 @@ public void addCentral(JPanel central, int memorySize, Point startPos, int vites
 		central.add(addElement(centrl, TypeElement.CENTRAL));
 	}
 	...
-``
+```
 
 ### e)Ajout du cas de la Centrale dans la méthode addElement dans la Simulation:
-``java
+```java
 public GrElementMobile addElement(Element sat, TypeElement typeElmt) {
 		GrElementMobile grSat = null;
 		switch (typeElmt) {
@@ -256,11 +256,11 @@ public GrElementMobile addElement(Element sat, TypeElement typeElmt) {
 		grSat.setModel(sat);
 		return grSat;
 	}
-``
+```
 
 ### f)Ajout du cas de la Centrale dans Classe deplSatellit pour gérer la communication entre le Satellit et la Central: 
 
- ``java 
+```java 
  ...
  public DeplSatellite(Integer start, Integer end, int vitesse) {
 		this.start = start;
@@ -271,7 +271,7 @@ public GrElementMobile addElement(Element sat, TypeElement typeElmt) {
 		this.setCentral(true);
 	}
  ...
- ``
+```
 
 
 
