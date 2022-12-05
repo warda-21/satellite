@@ -2,7 +2,7 @@ package model;
 
 import java.awt.Point;
 
-public class MonteSurfacePourSynchro extends DeplacementBalise {
+public class MonteSurfacePourSynchro extends DeplSynchronisation {
 	
 	public MonteSurfacePourSynchro(Deplacement next) {
 		super (next);

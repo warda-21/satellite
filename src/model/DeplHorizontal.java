@@ -2,7 +2,7 @@ package model;
 
 import java.awt.Point;
 
-public class DeplHorizontal extends DeplacementBalise {
+public class DeplHorizontal extends DeplSynchronisation {
 	Integer start;
 	Integer end;
 	Boolean fromStartToEnd = true;

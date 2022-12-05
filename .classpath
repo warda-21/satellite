@@ -2,6 +2,7 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="/AmountLog"/>
 	<classpathentry kind="src" path="/EventHandler"/>
 	<classpathentry kind="src" path="/Nicellipse"/>
 	<classpathentry kind="output" path="bin"/>

@@ -15,12 +15,15 @@ public class GrEther extends NiRectangle {
 	private static final long serialVersionUID = -7500849956681054391L;
 
 	List<GrElementMobile> q;
+	private boolean isCentral;
 	
 	public GrEther() {
 		q = new ArrayList<>();
+		this.isCentral = false;
 	}
 	
-	public void startSync(GrElementMobile elem) {
+	public void startSync(GrElementMobile elem, boolean isCentral) {
+		this.isCentral = isCentral;
 		q.add(elem);
 		this.repaint();
 	}
@@ -34,7 +37,11 @@ public class GrEther extends NiRectangle {
 		Point l = e.getParent().getLocation();
 		l.x += e.getLocation().x;
 		l.y += e.getLocation().y;
-		g.setColor(Color.ORANGE);
+		if(this.isCentral) {
+			g.setColor(Color.GREEN);
+		}else {
+			g.setColor(Color.ORANGE);
+		}
 		g.setStroke(new BasicStroke(2));
 		for (int i = 10; i < 150; i += 25) {
 			g.drawOval(l.x-i,l.y-i,bounds.width+i+i,bounds.height+i+i);

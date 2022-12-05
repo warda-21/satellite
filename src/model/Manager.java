@@ -5,35 +5,66 @@ import java.util.ArrayList;
 import events.SatelliteMoved;
 
 public class Manager {
-	ArrayList<Satellite> sats = new ArrayList<Satellite>();
-	ArrayList<Balise> bals = new ArrayList<Balise>();
-	
-	public void addBalise(Balise bal) {
-		bals.add(bal);
-		bal.setManager(this);
+
+	ArrayList<ElementMobile> listeelements = new ArrayList<ElementMobile>();
+
+	Central central;
+
+	public void addElement(ElementMobile element) {
+		listeelements.add(element);
+		element.setManager(this);
 	}
-	public void addSatellite(Satellite sat) {
-		this.sats.add(sat);
-		sat.setManager(this);
-	}
+
 	public void tick() {
-		for (Balise b : this.bals) {
+		for (ElementMobile b : this.listeelements) {
 			b.tick();
 		}
-		for (Satellite s : this.sats) {
-			s.tick();
+		if (this.central != null) {
+			this.central.tick();
 		}
 	}
-	
+
+	public Central getCentral() {
+		return central;
+	}
+
+	public void createCentral(Central ctr) {
+		this.central = ctr;
+		ctr.setManager(this);
+	}
+
 	public void baliseReadyForSynchro(Balise b) {
-		for (Satellite s : this.sats) {			
+		for (ElementMobile s : this.listeelements) {
 			s.registerListener(SatelliteMoved.class, b);
 		}
+
 	}
+
 	public void baliseSynchroDone(Balise b) {
-		for (Satellite s : this.sats) {			
+		for (ElementMobile s : this.listeelements) {
 			s.unregisterListener(SatelliteMoved.class, b);
 		}
 	}
+
+	/**
+	 * Balise pret pour a synchronisation Méthode permettant d'enregistrer la balise
+	 * dans le listener de tous satelites pour attendre les info.
+	 * 
+	 * @param b {@link Balise}
+	 */
+
+	public void baliseReadyForSynchro(Satellite b) {
+		central.registerListener(SatelliteMoved.class, b);
+	}
+
+	public void baliseSynchroDone(Satellite b) {
+		central.unregisterListener(SatelliteMoved.class, b);
+	}
+	/**
+	 * Balise pret pour a synchronisation Méthode permettant supprimer la balise
+	 * dans le listener de tous satelites pour attendre les info.
+	 * 
+	 * @param b {@link Balise}
+	 */
 
 }

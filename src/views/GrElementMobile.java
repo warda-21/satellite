@@ -7,12 +7,13 @@ import events.PositionChangeListener;
 import events.PositionChanged;
 import events.SynchroEvent;
 import events.SynchroEventListener;
+import model.Element;
 import model.ElementMobile;
 import nicellipse.component.NiRectangle;
 
 public class GrElementMobile extends NiRectangle implements PositionChangeListener, SynchroEventListener  {
 	private static final long serialVersionUID = -5422724191168577346L;
-	ElementMobile model;
+	Element model;
 	GrEther ether;
 	Boolean duringSynchro = false;
 	
@@ -25,7 +26,7 @@ public class GrElementMobile extends NiRectangle implements PositionChangeListen
 
 	Object getModel() { return this.model; }
 	
-	public void setModel(ElementMobile model) {
+	public void setModel(Element model) {
 		this.model = model;
 		model.registerListener(PositionChanged.class, this);
 		model.registerListener(SynchroEvent.class, this);
@@ -34,9 +35,9 @@ public class GrElementMobile extends NiRectangle implements PositionChangeListen
 	}
 	
 	@Override
-	public void whenStartSynchro(SynchroEvent arg) {
+	public void whenStartSynchro(SynchroEvent arg, boolean isCentral) {
 		duringSynchro = true;
-		this.ether.startSync(this);	
+		this.ether.startSync(this, isCentral);	
 	}
 
 	@Override

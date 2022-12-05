@@ -1,7 +1,7 @@
 package events;
 
 import eventHandler.AbstractEvent;
-import model.DeplSynchronisation;
+import model.Deplacement;
 
 public class SynchroEvent extends AbstractEvent {
 	private static final long serialVersionUID = 480096146703824993L;
@@ -12,10 +12,11 @@ public class SynchroEvent extends AbstractEvent {
 
 	public void sendTo(Object target) {
 		SynchroEventListener listener = (SynchroEventListener) target;
-		DeplSynchronisation depl = (DeplSynchronisation) this.getSource();
+		Deplacement depl = (Deplacement) this.getSource();
 		if (depl.synchroStarted())
-			listener.whenStartSynchro(this);
-		else 
+			listener.whenStartSynchro(this, depl.isCentral());
+		else
 			listener.whenStopSynchro(this);
+
 	}
 }

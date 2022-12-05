@@ -2,7 +2,7 @@ package model;
 
 import java.awt.Point;
 
-public class Redescendre extends DeplacementBalise {
+public class Redescendre extends DeplSynchronisation {
 	int profondeur;
 	
 	public Redescendre(Deplacement next, int profondeur) {
@@ -11,7 +11,7 @@ public class Redescendre extends DeplacementBalise {
 	}
 	
 	@Override
-	public void bouge(Balise target) {
+	public void bouge(ElementMobile target) {
 		Point p = target.getPosition();
 		int y = p.y;
 		if (y < this.profondeur) {

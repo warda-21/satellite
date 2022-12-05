@@ -2,7 +2,7 @@ package model;
 
 import java.awt.Point;
 
-public class DeplVertical extends DeplacementBalise  {
+public class DeplVertical extends DeplSynchronisation  {
 	Integer min;
 	Integer max;
 	Boolean monte = false;
@@ -20,12 +20,10 @@ public class DeplVertical extends DeplacementBalise  {
 		if (monte) {
 			y -= 3;
 			if (y < min) monte = false;
-			
 		} else {
 			y += 3;
 			if (y > max) monte = true;
 		}
-		System.out.println(y);System.out.println(monte);
 		target.setPosition(new Point(p.x, y));
 	}
 
