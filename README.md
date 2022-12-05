@@ -1,5 +1,5 @@
 # satellite
-## 1. Explication et résolution du beug:
+## 1. Explication et résolution du bug:
 Le problème c'est que quand une balise remonte sur la surface reste bloqué même après avoir communiqué avec le satellite, ceci  arrive quand dataSize atteind la valeur de memorySize, au lieu de transmettre les data au satellite , il on a dataSize qui est remise automatiquement à 0 ce qui cause un blocage sur la surface.
 Comme solution on a suggéré deux variables booleans isSurface qui est remise à true si notre Balise est remonté et prête à envoyer les data et isSynchro qui est remise à true quand la balise et le satellite communiquent entre eux.
 ```java
@@ -77,4 +77,27 @@ Ces deux fonctions contiennent un code sémilaire dans la classe Simulation, ce 
 ```
 Cette modification implique une nouvelle méthode ajouté dans la Class Manager qui est  _addElement_  qui permets d'ajouter un élément mobile peu importe son type(Satellite ou Balise).
 
-## 3. Suite
+## 3. Ajout d'un élément graphique et une fonctionnalité:
+Ajout d'une Centrale pour communiquer avec les satelites de la façon suivante: 
+	Une balise envoit des informations à un Satelite , et ce dernier transmet les données reçus à La Centrale.
+
+``java 
+gjdhfgjhjgfdkjfj
+``
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 4. Suite
