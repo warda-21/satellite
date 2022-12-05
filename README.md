@@ -76,28 +76,203 @@ Ces deux fonctions contiennent un code sémilaire dans la classe Simulation, ce 
 	
 ```
 Cette modification implique une nouvelle méthode ajouté dans la Class Manager qui est  _addElement_  qui permets d'ajouter un élément mobile peu importe son type(Satellite ou Balise).
-
-## 3. Ajout d'un élément graphique et une fonctionnalité:
-Ajout d'une Centrale pour communiquer avec les satelites de la façon suivante: 
-	Une balise envoit des informations à un Satelite , et ce dernier transmet les données reçus à La Centrale.
-
+## 3. Amélioration du code de la Class Manager :
 ``java 
-gjdhfgjhjgfdkjfj
+public class Manager {
+	ArrayList<ElementMobile> listeelements = new ArrayList<ElementMobile>();
+	Central central;
+	public void addElement(ElementMobile element) {
+		listeelements.add(element);
+		element.setManager(this);
+	}
+	public void tick() {
+		for (ElementMobile b : this.listeelements) {
+			b.tick();
+		}
+		if (this.central != null) this.central.tick();
+	}
+	public Central getCentral() {
+		return central;
+	}
+	public void createCentral(Central ctr) {
+		this.central = ctr;
+		ctr.setManager(this);
+	}
+	public void baliseReadyForSynchro(Balise b) {
+		for (ElementMobile s : this.listeelements) {
+			s.registerListener(SatelliteMoved.class, b);
+		}
+
+	}
+	public void baliseSynchroDone(Balise b) {
+		for (ElementMobile s : this.listeelements) {
+			s.unregisterListener(SatelliteMoved.class, b);
+		}
+	}
+	public void baliseReadyForSynchro(Satellite b) {
+		central.registerListener(SatelliteMoved.class, b);
+	}
+	public void baliseSynchroDone(Satellite b) {
+		central.unregisterListener(SatelliteMoved.class, b);
+	}
+}
 ``
 
 
+## 4. Ajout d'un élément graphique et une fonctionnalité:
+Ajout d'une Centrale pour communiquer avec les satelites de la façon suivante: 
+	Une balise envoit des informations à un Satelite , et ce dernier transmet les données reçus à La Centrale.
+### a)Création de l'énumération TypeElement: 
+``java 
+package simulation;
+
+public enum TypeElement {
+	CENTRAL, BALISE, SATELLITE;
+
+}
+``
+### b)Ajout des boutton Start et Pause pour commencer et arrêter la simulation: 
+Dans la Class Simulation 
+``java
+...
+private JPanel buttonPanel() {
+		JButton start = new JButton("Start");
+		JButton stop = new JButton("Pause");...
+		start.setEnabled(false);
+		start.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				animation.start();
+				start.setEnabled(false);
+				stop.setEnabled(true);
+			}
+		});
+
+		stop.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				animation.stop();
+				start.setEnabled(true);
+				stop.setEnabled(false);
+			}
+		});
+...
+``
+### c)Ajout du boutton Save  pour enregistrer les données actuel de notre simulation et envoyer un  rapport nommé "raport_satellite.txt" : 
+Dans la Class simulation
+``java
+...
+private JPanel buttonPanel() {
+		JButton start = new JButton("Start");
+		JButton stop = new JButton("Pause");
+		JButton save = new JButton("Save");
+
+		save.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				manager.getCentral().enregistrementData();
+				save.setEnabled(true);
+			}
+		});....
+...
+``
+ les données sont récupérées et enregistrés grace à la fonction suivante dans la Classe Centrale:
+ ``java
+ ...
+ 	public void enregistrementData() {
+		if (this.datas == null)
+			return;
+		Collections.sort(this.datas);
+		String information = "";
+		for (int data : this.datas) {
+			information += "Satellite enregiste data => " + data + " \n";
+		}
+		Rapport rapport = new Rapport();
+		rapport.genererRapport(information, this.datas.size());
+	}
+...
+ ``
+ Et enfin le fichier rapport est généré  avec la Classe Rapport suivante :
+ ``java
+ public class Rapport {
+	private String RAPPORT = "Le rapport du @date@ \n"
+			+ "Nombre de données recoltées : @nbInfortion@ \n"
+			+ "@Information@ "
+			+ "=========================================================\n";
+	private static final String NOM_FICHIER = "raport_satellite.txt";
+	
+	public void genererRapport(String information, int nbInf) {
+		
+		Date aujourdhui = new Date();
+		DateFormat fullDateFormat = DateFormat.getDateTimeInstance(
+		        DateFormat.FULL,
+		        DateFormat.FULL);
+		String date = fullDateFormat.format(aujourdhui);
+		RAPPORT = RAPPORT.replaceAll("@date@", date);
+		RAPPORT = RAPPORT.replaceAll("@nbInfortion@", ""+nbInf);
+		RAPPORT = RAPPORT.replaceAll("@Information@", information);
+		
+		//System.out.println(RAPPORT);
+		
+		Path path = Paths.get(NOM_FICHIER);
+		try {
+			
+			FileWriter myWriter = new FileWriter("filename.txt");
+		      myWriter.write(RAPPORT);
+		      myWriter.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+}
+``
+### d)Ajout de la méthode addCentral dans la simulation pour Creer la Centrale: 
+``java 
+...
+public void addCentral(JPanel central, int memorySize, Point startPos, int vitesse) {
+		Central centrl = new Central(memorySize, "central");
+		centrl.setPosition(startPos);
+		central.add(addElement(centrl, TypeElement.CENTRAL));
+	}
+	...
+``
+
+### e)Ajout du cas de la Centrale dans la méthode addElement dans la Simulation:
+``java
+public GrElementMobile addElement(Element sat, TypeElement typeElmt) {
+		GrElementMobile grSat = null;
+		switch (typeElmt) {
+		case CENTRAL:
+			grSat = new GrCentral(this.ether);
+			manager.createCentral((Central) sat);
+			break;
+		case BALISE:
+			grSat = new GrBalise(this.ether);
+			manager.addElement((Balise) sat);
+			break;
+		case SATELLITE:
+			grSat = new GrSatellite(this.ether);
+			manager.addElement((Satellite) sat);
+			break;
+		}
+		grSat.setModel(sat);
+		return grSat;
+	}
+``
+
+### f)Ajout du cas de la Centrale dans Classe deplSatellit pour gérer la communication entre le Satellit et la Central: 
+
+ ``java 
+ ...
+ public DeplSatellite(Integer start, Integer end, int vitesse) {
+		this.start = start;
+		this.end = end;
+		this.vitesse = vitesse;
+		this.synchroTime = 10;
+		this.synchro = null;
+		this.setCentral(true);
+	}
+ ...
+ ``
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-## 4. Suite
+## 5. Suite
